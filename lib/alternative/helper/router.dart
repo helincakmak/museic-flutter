@@ -27,7 +27,7 @@ class AppRouter {
       case startPage:
         return MaterialPageRoute(builder: (_) => StartPage());
       case signupPage:
-        return MaterialPageRoute(builder: (_) => SignUpPage());
+        return MaterialPageRoute(builder: (_) => RegisterPage());
       case artistProfilePage:
         final args = settings.arguments as Map<String, dynamic>;
         return MaterialPageRoute(

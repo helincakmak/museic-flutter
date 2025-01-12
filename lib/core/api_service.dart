@@ -4,7 +4,28 @@ import 'package:museic/presentation/pages/songEntity.dart';
 import 'package:html/parser.dart' as parser;
 
 class ApiService {
-  final String baseUrl = 'http://10.0.2.2:8000';
+  final String baseUrl = 'http://192.168.1.174:8000';
+
+  Future<Map<String, dynamic>> registerUser(
+      String username, String email, String password, String gender) async {
+    final url = Uri.parse('$baseUrl/api/register/');
+    final headers = {'Content-Type': 'application/json'};
+    final body = json.encode({
+      'username': username,
+      'email': email,
+      'password': password,
+      'gender': gender,
+    });
+
+    final response = await http.post(url, headers: headers, body: body);
+
+    if (response.statusCode == 201) {
+      return json.decode(response.body);
+    } else {
+      final error = json.decode(response.body);
+      throw Exception('Kayıt başarısız: ${error['error']}');
+    }
+  }
 
   // Şarkı listesini çeken servis
   Future<List<SongEntity>> fetchSongs() async {
@@ -85,6 +106,7 @@ class ApiService {
 
 }
 
+
 class UserProfile {
   final String username;
   final String email;
@@ -103,12 +125,12 @@ class UserProfile {
   }
 }
 Future<String> getCsrfToken() async {
-  final response = await http.get(Uri.parse('http://10.0.2.2:8000/')); // Django ana sayfasına GET isteği gönderin
+  final response = await http.get(Uri.parse('http://192.168.1.174:8000')); // Django ana sayfasına GET isteği gönderin
 
   if (response.statusCode == 200) {
     // HTML yanıtını parse et
     final document = parser.parse(response.body);
-    
+
     // CSRF token'ını al
     final csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]')?.attributes['value'];
 

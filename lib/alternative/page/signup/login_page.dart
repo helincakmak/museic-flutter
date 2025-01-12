@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/api/login/'),
+        Uri.parse('http://192.168.1.174:8000/api/login/'),
         body: {
           'username': username,
           'password': password,
@@ -43,15 +43,10 @@ class _LoginPageState extends State<LoginPage> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        if (responseData['token'] != null) {
-          // Token'ı SharedPreferences ile sakla
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('token', responseData['token']);
-
-          // Ana sayfaya yönlendir
+        if (responseData != null) {
           Navigator.pushReplacementNamed(context, AppRouter.homePageWrapper);
         } else {
-          _showError('Token alınamadı. Giriş başarısız.');
+          _showError('Giriş başarısız.');
         }
       } else {
         _showError('Giriş başarısız. Kod: ${response.statusCode}');
@@ -65,21 +60,10 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  // Token kontrol fonksiyonu
-  Future<void> _checkToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-
-    if (token != null && token.isNotEmpty) {
-      // Token varsa ana sayfaya yönlendir
-      Navigator.pushReplacementNamed(context, AppRouter.homePageWrapper);
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    _checkToken(); // Sayfa yüklendiğinde token kontrolü
   }
 
   void _showError(String message) {
