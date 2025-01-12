@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:museic/alternative/helper/router.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Kayıt başarılı: ${responseData['username']}')),
         );
-        Navigator.pop(context); // Kullanıcıyı bir önceki sayfaya yönlendir
+        Navigator.pushReplacementNamed(context, '/login');
       } else {
         final errorData = json.decode(response.body);
         ScaffoldMessenger.of(context).showSnackBar(
