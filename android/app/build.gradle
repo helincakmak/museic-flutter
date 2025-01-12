@@ -1,0 +1,37 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin" // Flutter Gradle Plugin
+}
+
+android {
+    namespace = "com.example.museic"
+    compileSdk = 34 // Emülatörünüzün SDK sürümü
+
+    defaultConfig {
+        applicationId = "com.example.museic"
+        minSdk = 21 // Minimum desteklenen Android sürümü
+        targetSdk = 34 // Hedeflenen SDK sürümü
+        versionCode = 1
+        versionName = "1.0"
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.debug
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+flutter {
+    source = "../.."
+}
